@@ -56,6 +56,14 @@ conv_layer = tf.nn.relu(conv_layer)
 ```
 The code above uses the ``tf.nn.conv2d()`` function to compute the convolution with ``weight`` as the filter and ``[1, 2, 2, 1]`` for the strides.
 
+In TensorFlow, strides is an array of 4 elements:
+1. stride for batch
+2. stride for height
+3. stride for width
+4. stride for features
+
+PS: You can always set the first and last element to 1 in strides in order to use all batches and features.
+
 The ``tf.nn.bias_add()`` function adds a 1-d bias to the last dimension in a matrix.
 
 ## Pooling
@@ -92,6 +100,14 @@ conv_layer = tf.nn.max_pool(
     strides=[1, 2, 2, 1],
     padding='SAME')
 ```
+```python
+def maxpool2d(x, k=2):
+    return tf.nn.max_pool(
+        x,
+        ksize=[1, k, k, 1],
+        strides=[1, k, k, 1],
+        padding='SAME')
+```
 
 The ``ksize`` and ``strides`` parameters are structured as 4-element lists, with each element corresponding to a dimension of the input tensor (``[batch, height, width, channels]``). 
 
@@ -103,4 +119,26 @@ The ``ksize`` and ``strides`` parameters are structured as 4-element lists, with
 
 ## Inception
 
+## Model
+
+```python
+def conv_net(x, weights, biases, dropout):
+    # Layer 1 - 28*28*1 to 14*14*32
+    conv1 = conv2d(x, weights['wc1'], biases['bc1'])
+    conv1 = maxpool2d(conv1, k=2)
+
+    # Layer 2 - 14*14*32 to 7*7*64
+    conv2 = conv2d(conv1, weights['wc2'], biases['bc2'])
+    conv2 = maxpool2d(conv2, k=2)
+
+    # Fully connected layer - 7*7*64 to 1024
+    fc1 = tf.reshape(conv2, [-1, weights['wd1'].get_shape().as_list()[0]])
+    fc1 = tf.add(tf.matmul(fc1, weights['wd1']), biases['bd1'])
+    fc1 = tf.nn.relu(fc1)
+    fc1 = tf.nn.dropout(fc1, dropout)
+
+    # Output Layer - class prediction - 1024 to 10
+    out = tf.add(tf.matmul(fc1, weights['out']), biases['out'])
+    return out
+```
 
