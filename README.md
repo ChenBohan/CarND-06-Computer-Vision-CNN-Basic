@@ -3,6 +3,8 @@ Udacity Self-Driving Car Engineer Nanodegree: Convolutional Neural Networks (CNN
 
 ## Basic knowledge
 
+<img src="https://github.com/ChenBohan/Auto-Car-Sensor-Fusion-02-Lidar-and-Radar-Fusion/blob/master/readme_img/Overview%20of%20the%20Kalman%20Filter%20Algorithm%20Map.png" width = "70%" height = "70%" div align=center />
+
 Ref: https://adeshpande3.github.io/adeshpande3.github.io/A-Beginner's-Guide-To-Understanding-Convolutional-Neural-Networks/
 
 Given:
@@ -117,7 +119,11 @@ The ``ksize`` and ``strides`` parameters are structured as 4-element lists, with
 
 ## 1 * 1 convolutins
 
+<img src="https://github.com/ChenBohan/AI-CV-02-Intro-to-CNN/blob/master/readme_img/1*1%20convolution.png" width = "70%" height = "70%" div align=center />
+
 ## Inception
+
+<img src="https://github.com/ChenBohan/AI-CV-02-Intro-to-CNN/blob/master/readme_img/inception.png" width = "70%" height = "70%" div align=center />
 
 ## Model
 
