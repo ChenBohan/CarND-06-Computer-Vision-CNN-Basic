@@ -2,6 +2,103 @@
 
 Udacity Self-Driving Car Engineer Nanodegree: Convolutional Neural Networks (CNN)
 
+## Further reading
+
+- [Visualizing and understanding Convolutional Neural Networks](https://arxiv.org/abs/1311.2901)
+- [deep visualization toolbox](https://www.youtube.com/watch?v=ghEmQSxT6tw)
+
+## Convolution Output Shape
+
+H = height, W = width, D = depth
+
+- We have an input of shape 32x32x3 (HxWxD)
+- 20 filters of shape 8x8x3 (HxWxD)
+- A stride of 2 for both the height and width (S)
+- With padding of size 1 (P)
+
+```
+new_height = (input_height - filter_height + 2 * P)/S + 1
+new_width = (input_width - filter_width + 2 * P)/S + 1
+```
+
+```python
+input = tf.placeholder(tf.float32, (None, 32, 32, 3))
+filter_weights = tf.Variable(tf.truncated_normal((8, 8, 3, 20))) # (height, width, input_depth, output_depth)
+filter_bias = tf.Variable(tf.zeros(20))
+strides = [1, 2, 2, 1] # (batch, height, width, depth)
+padding = 'SAME'
+conv = tf.nn.conv2d(input, filter_weights, strides, padding) + filter_bias
+```
+
+## TensorFlow Convolution Layer
+
+TensorFlow provides the `tf.nn.conv2d()` and `tf.nn.bias_add()` functions to create your own convolutional layers.
+
+```python
+# Input/Image
+input = tf.placeholder(
+    tf.float32,
+    shape=[None, image_height, image_width, color_channels])
+
+# Weight and bias
+weight = tf.Variable(tf.truncated_normal(
+    [filter_size_height, filter_size_width, color_channels, k_output]))
+bias = tf.Variable(tf.zeros(k_output))
+
+# Apply Convolution
+conv_layer = tf.nn.conv2d(input, weight, strides=[1, 2, 2, 1], padding='SAME')
+# Add bias
+conv_layer = tf.nn.bias_add(conv_layer, bias)
+# Apply activation function
+conv_layer = tf.nn.relu(conv_layer)
+```
+
+stride = [batch, input_height, input_width, input_channels]
+
+We are generally always going to set the stride for `batch` and `input_channels` to be `1`.
+
+## Max pooling
+
+- Decrease the size of the output
+- Prevent overfitting
+
+- Parameter-free - Does not add to your number of parameters -> Prevent overfitting
+- Often more accurate
+- More expensive - at lower stride
+- More hyper parameters - `pooling region size` & `pooling stride`
+
+Famous Netwroks:
+
+- LENET-5, 1998
+- ALEXNET, 2012
+
+TensorFlow provides the ``tf.nn.max_pool()`` function to apply max pooling to your convolutional layers.
+
+```python
+conv_layer = tf.nn.conv2d(input, weight, strides=[1, 2, 2, 1], padding='SAME')
+conv_layer = tf.nn.bias_add(conv_layer, bias)
+conv_layer = tf.nn.relu(conv_layer)
+# Apply Max Pooling
+conv_layer = tf.nn.max_pool(
+    conv_layer,
+    ksize=[1, 2, 2, 1],
+    strides=[1, 2, 2, 1],
+    padding='SAME')
+```
+
+Recently, pooling layers have fallen out of favor. Some reasons are:
+
+- Recent datasets are so big and complex we're more concerned about underfitting.
+- Dropout is a much better regularizer.
+- Pooling results in a loss of information.
+
+
+
+
+
+
+
+
 ## Basic knowledge
 
 <img src="https://github.com/ChenBohan/AI-CV-02-Intro-to-CNN/blob/master/readme_img/dog_example.png" width = "70%" height = "70%" div align=center />
