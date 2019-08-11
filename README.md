@@ -1,4 +1,5 @@
-# AI-Computer-Vision-02-Intro-to-CNN
+# CarND-06-Computer-Vision-CNN-Basic
+
 Udacity Self-Driving Car Engineer Nanodegree: Convolutional Neural Networks (CNN)
 
 ## Basic knowledge
