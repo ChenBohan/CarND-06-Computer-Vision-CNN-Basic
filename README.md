@@ -8,6 +8,8 @@ Udacity Self-Driving Car Engineer Nanodegree: Convolutional Neural Networks (CNN
 - [Visualizing and understanding Convolutional Neural Networks](https://arxiv.org/abs/1311.2901)
 - [deep visualization toolbox](https://www.youtube.com/watch?v=ghEmQSxT6tw)
 - [CS231n Convolutional Neural Networks for Visual Recognition](http://cs231n.github.io/convolutional-networks/)
+- [Michael Nielsen's free book on Deep Learning](http://neuralnetworksanddeeplearning.com/)
+- [Goodfellow, Bengio, and Courville's more advanced free book on Deep Learning](http://deeplearningbook.org/)
 - [TensorFlow Variables](https://www.tensorflow.org/guide/variables)
 
 ## Convolution Data Shape
