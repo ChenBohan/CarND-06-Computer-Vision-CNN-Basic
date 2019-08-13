@@ -8,35 +8,33 @@ Udacity Self-Driving Car Engineer Nanodegree: Convolutional Neural Networks (CNN
 - [Visualizing and understanding Convolutional Neural Networks](https://arxiv.org/abs/1311.2901)
 - [deep visualization toolbox](https://www.youtube.com/watch?v=ghEmQSxT6tw)
 - [CS231n Convolutional Neural Networks for Visual Recognition](http://cs231n.github.io/convolutional-networks/)
+- [Michael Nielsen's free book on Deep Learning](http://neuralnetworksanddeeplearning.com/)
+- [Goodfellow, Bengio, and Courville's more advanced free book on Deep Learning](http://deeplearningbook.org/)
 - [TensorFlow Variables](https://www.tensorflow.org/guide/variables)
 
-## Convolution data Shape
-
-### Input shape
-
-
-
-### Output shape
-
-H = height, W = width, D = depth
-
-- We have an input of shape 32x32x3 (HxWxD)
-- 20 filters of shape 8x8x3 (HxWxD)
-- A stride of 2 for both the height and width (S)
-- With padding of size 1 (P)
+## Convolution Data Shape
 
 ```
-new_height = (input_height - filter_height + 2 * P)/S + 1
-new_width = (input_width - filter_width + 2 * P)/S + 1
+out_height = ceil(float(in_height - filter_height + 1) / float(strides[1]))
+out_width  = ceil(float(in_width - filter_width + 1) / float(strides[2]))
 ```
 
 ```python
-input = tf.placeholder(tf.float32, (None, 32, 32, 3))
-filter_weights = tf.Variable(tf.truncated_normal((8, 8, 3, 20))) # (height, width, input_depth, output_depth)
-filter_bias = tf.Variable(tf.zeros(20))
-strides = [1, 2, 2, 1] # (batch, height, width, depth)
-padding = 'SAME'
-conv = tf.nn.conv2d(input, filter_weights, strides, padding) + filter_bias
+def conv2d(input):
+    # Filter (weights and bias)
+    # The shape of the filter weight is (height, width, input_depth, output_depth)
+    # The shape of the filter bias is (output_depth,)
+    # TODO: Define the filter weights `F_W` and filter bias `F_b`.
+    # NOTE: Remember to wrap them in `tf.Variable`, they are trainable parameters after all.
+    F_W = tf.Variable(tf.truncated_normal((2, 2, 1, 3)))
+    F_b = tf.Variable(tf.zeros(3))
+    # TODO: Set the stride for each dimension (batch_size, height, width, depth)
+    strides = [1, 2, 2, 1]
+    # TODO: set the padding, either 'VALID' or 'SAME'.
+    padding = 'VALID'
+    # https://www.tensorflow.org/versions/r0.11/api_docs/python/nn.html#conv2d
+    # `tf.nn.conv2d` does not include the bias computation so we have to add it ourselves after.
+    return tf.nn.conv2d(input, F_W, strides, padding) + F_b
 ```
 
 ## TensorFlow Convolution Layer
@@ -81,15 +79,15 @@ Famous Netwroks:
 TensorFlow provides the ``tf.nn.max_pool()`` function to apply max pooling to your convolutional layers.
 
 ```python
-conv_layer = tf.nn.conv2d(input, weight, strides=[1, 2, 2, 1], padding='SAME')
-conv_layer = tf.nn.bias_add(conv_layer, bias)
-conv_layer = tf.nn.relu(conv_layer)
-# Apply Max Pooling
-conv_layer = tf.nn.max_pool(
-    conv_layer,
-    ksize=[1, 2, 2, 1],
-    strides=[1, 2, 2, 1],
-    padding='SAME')
+def maxpool(input):
+    # TODO: Set the ksize (filter size) for each dimension (batch_size, height, width, depth)
+    ksize = [1, 2, 2, 1]
+    # TODO: Set the stride for each dimension (batch_size, height, width, depth)
+    strides = [1, 2, 2, 1]
+    # TODO: set the padding, either 'VALID' or 'SAME'.
+    padding = 'VALID'
+    # https://www.tensorflow.org/versions/r0.11/api_docs/python/nn.html#max_pool
+    return tf.nn.max_pool(input, ksize, strides, padding)
 ```
 
 Recently, pooling layers have fallen out of favor. Some reasons are:
